@@ -1,2 +1,2 @@
-# mySQL
-show tables for SQL
+#showtables.py: show tables for SQL
+  
