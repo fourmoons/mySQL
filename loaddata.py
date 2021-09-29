@@ -15,13 +15,19 @@ filename = input('filename: ')
 
 with open(filename) as f:
     data = [x.strip() for x in f]
-    lines = [i.split() for i in data]             
+    lines = [i.split() for i in data]
+    lines = [tuple(i) for i in lines] #list of tuples
 
 mycursor = mydb.cursor()
-for i in range(len(lines)):
-    lines[i] = tuple(lines[i])
-    command = "INSERT INTO " + table + " VALUES " + str(lines[i])
-   # print(command)
-    mycursor.execute(command)
 
-#[print(str(i)) for i in lines]
+mycursor.execute("SHOW columns FROM " + table)
+tmp = [(column[0]) for column in mycursor.fetchall()]
+headers = "("
+for i in range(len(tmp) - 1):
+    headers += str(tmp[i]) +  ", "
+headers += str(tmp[-1]) + ")"
+
+command = "INSERT INTO " + table + " " + str(headers) + " VALUES (%s, %s, %s)"
+
+mycursor.executemany(command, lines)
+mydb.commit()
