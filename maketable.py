@@ -1,3 +1,5 @@
+#UNFINISHED
+#self-made attempt at creating a mySQLtable directly from a csv file
 import mysql.connector 
 import os 
 import getpass 
